@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -36,23 +37,20 @@ public class MovieController {
 		logger.info("영화리스트 조회 결과: {}", list);
 		return "movie/movie_info";
 	}
-	@RequestMapping("/movie_name")
+	@RequestMapping("/movie_name/{movieName}")
 	public String movieName(
-			@RequestParam("filmNumber")String filmNumber,
+			@PathVariable("movieName")String name,
 			Model model
 			){
 		logger.info("MovieController-movie_name 진입");
-		logger.info("영화 아이디: {}", filmNumber);
-		movie = service.searchByName(filmNumber);
-		logger.info("영화 제목: {}", movie.getFilmName());
+		logger.info("영화 아이디: {}", name);
+		movie = service.searchByName(name);
+		logger.info("영화 제목: {}",movie);
 		model.addAttribute("movie", movie);
 		return "movie/movie_name";
 	}
 	@RequestMapping("/movie_Cut")
-	public String movieCut(
-			@RequestParam("filmNumber")String filmNumber,
-			Model model
-			){
+	public String movieCut(String filmNumber,Model model){
 		logger.info("MovieController-movie_Cut 진입");
 		logger.info("무비컷 영화 아이디 : {}", filmNumber);
 		movie = service.searchByName(filmNumber);
@@ -65,10 +63,7 @@ public class MovieController {
 		return "movie/movie_Cut";
 	}
 	@RequestMapping("/movie_Tra")
-	public String movieTra(
-			@RequestParam()String filmNumber,
-			Model model
-			){
+	public String movieTra(String filmNumber,Model model){
 		logger.info("MovieController-movie_Tra 진입");
 		logger.info("테라의 영화 아이디 : {}", filmNumber);
 		movie = service.searchByName(filmNumber);
@@ -80,10 +75,7 @@ public class MovieController {
 		return "movie/movie_Tra";
 	}
 	@RequestMapping("/movie_Basic")
-	public String movieBasic(
-			@RequestParam()String filmNumber,
-			Model model
-			){
+	public String movieBasic(String filmNumber,Model model){
 		logger.info("MovieController-movie_Basic 진입");
 		logger.info("베이직 영화 아이디 : {}", filmNumber );
 		movie = service.searchByName(filmNumber);
@@ -92,10 +84,7 @@ public class MovieController {
 		return "movie/movie_Basic";
 	}
 	@RequestMapping("/movieChart")
-	public String movie_Chart(
-			@RequestParam()String filmNumber,
-			Model model
-			){
+	public String movie_Chart(String filmNumber,Model model){
 		logger.info("MovieController-movie_Chart 진입");
 		List list = service.getList();
 		model.addAttribute("list",list);
