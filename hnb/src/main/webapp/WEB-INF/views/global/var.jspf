@@ -3,6 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="context" value="<%=request.getContextPath()%>"></c:set>
+<c:set var="js" value="${context}/resources/js"></c:set>
+<c:set var="css" value="${context}/resources/css"></c:set>
+<c:set var="images" value="${context}/resources/images"></c:set>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
 
