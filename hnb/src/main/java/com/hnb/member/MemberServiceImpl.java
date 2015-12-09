@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+
 @Service
 public class MemberServiceImpl  implements MemberService{
 	private static MemberService instance = new MemberServiceImpl();
@@ -11,50 +12,53 @@ public class MemberServiceImpl  implements MemberService{
 		return instance;
 	} 
 	MemberDAO dao = MemberDAOImpl.getInstance();
-	/**
-	 * DML
-	 */
+	
+	
 	// 회원가입
 	@Override
 	public int join(MemberVO member) {
 		return dao.insert(member);
 	}
-	//비번변경
+	
+	// 전체 회원목록 조회
 	@Override
-	public int change(MemberVO o) {
-		return dao.update(o);
+	public List<MemberVO> getList() {
+		return dao.selectAll();
 	}
-	 // 회원탈퇴
+	
+	// 임의의 검색어로 조회
 	@Override
-	public int remove(String userid) {
-		return dao.delete(userid);
+	public List<MemberVO> searchByKeyword(String column, String keyword) {
+		return dao.selectSomeBy(column, keyword);
 	}
-	/**
-	 * DQL
-	 */
+	
+	// ID로 회원검색
+	@Override
+	public MemberVO selectById(String id) {
+		return dao.selectOneBy(id);
+	}
+	
+	// 총 회원 수 검색
+	@Override
+	public int count() {
+		return dao.count();
+	}
+	
 	// 로그인
 	@Override
 	public MemberVO login(String id, String pass) {
 		return dao.login(id, pass);
 	}
-	//전체 회원수 
+	
+	// 회원정보 변경
 	@Override
-	public int count() {
-		return dao.count();
+	public int change(MemberVO member) {
+		return dao.update(member);
 	}
-	//ID로 회원검색
+	
+	// 회원탈퇴
 	@Override
-	public MemberVO searchById(String id) {
-		return dao.selectOneBy(id);
-	}
-	// 검색어로 검색
-	@Override
-	public List<MemberVO> searchBySearchword(String domain,String searchword) {
-		return dao.selectSomeBy(domain, searchword);
-	}
-	// 전체 회원목록 
-	@Override
-	public List<MemberVO> getList() {
-		return dao.selectAll();
+	public int remove(String id) {
+		return dao.delete(id);
 	}
 }

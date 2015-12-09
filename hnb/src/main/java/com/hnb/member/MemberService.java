@@ -3,26 +3,19 @@ package com.hnb.member;
 import java.util.List;
 
 public interface MemberService {
-	/**
-	 * DML -> pstmt.executeUpdate()
-	 */
-	// 회원가입
-	public int join(MemberVO o);
-	// 비번 변경
-	public int change(MemberVO o);
-	// 회원 탈퇴
-	public int remove(String userid);
-	/**
-	 * DQL -> stmt.executeQuery()
-	 */
-	// 로그인
-	public MemberVO login(String id, String pass);
-	// 총회원수
-	public int count();
-	// 아이디 검색
-	public MemberVO searchById(String id);
-	// 키워드 검색(중복 허용)
-	public List<MemberVO> searchBySearchword(String domain,String searchword);
-	// 전체 회원 목록
-	public List<MemberVO> getList();
+	// C : 추가(회원가입)
+			public int join(MemberVO member);
+			
+			// R : 조회
+			public List<MemberVO> getList(); //전체회원목록
+			public List<MemberVO> searchByKeyword(String column,String keyword); //임의의 값으로 검색
+			public MemberVO selectById(String id); //아이디로 조회
+			public int count(); //전체회원수 조회
+			public MemberVO login(String id, String pass); //로그인
+			
+			// U : 개인정보 변경
+			public int change(MemberVO member);
+			
+			// D : 삭제 (회원탈퇴)
+			public int remove(String id);
 }
