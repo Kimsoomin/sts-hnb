@@ -1,138 +1,167 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" >
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" >
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="${css}/common.css" /> 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="${context}/main.do">
-      	<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-      </a>
-    </div>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+	<div>
+	<div id="frm_toggle">
+	<c:if test="${empty sessionScope.user}">
+	   	<!-- 로그인 안한 상태 -->
+		<div id="frm_login" class="form-2">
+			<p class="float">
+				<label for="login"><i class="icon-user">ID</i></label> <input type="text" name="login" placeholder="UserID">
+			</p>
+			<p class="float">
+				<label for="password"><i class="icon-user">PW</i></label> <input type="password" name="password" placeholder="Password" class="showpassword">
+			</p>
+			<p class="clearfix">
+				<a id="join_btn" class="log-twitter">회원 가입</a> 
+				<a id="login_btn" class="log-twitter" style="margin-left:10px;">로그인</a> 
+			</p>
+		</div>
+		</c:if>
+		<c:if test="${not empty sessionScope.user}">
+			<div id="frm_logined" class="form-2">
+				<p style="color:white;">${user.name}님 반갑습니다.</p><p class="clearfix"></p>
+					<input id="logout_btn" type="submit" name="submit" value="로그아웃">
+					<input id="mypage_btn" type="submit" name="submit" value="마이 페이지" style="width: 85px;">
+			</div>
+		</c:if>
+		</div>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Javascript <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="${context}/js/main.do?page=hello">Javascript 소개</a></li>
-			<li><a href="${context}/js/main.do?page=bom">BOM</a></li>
-			<li><a href="${context}/js/main.do?page=dom">DOM</a></li>
-			<li><a href="${context}/js/main.do?page=form_tag">폼태그</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">jQuery <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="${context}/jquery/main.do?page=hello">JQuery 소개</a></li>
-			<li><a href="${context}/jquery/main.do?page=form_tag">폼태그</a></li>
-			<li><a href="${context}/jquery/main.do?page=selector">셀렉터</a></li>
-			<li><a href="${context}/jquery/main.do?page=traversing">조회(트래버싱)</a></li>
-			<li><a href="${context}/jquery/main.do?page=attr">어트리뷰트</a></li>
-			<li role="separator" class="divider"></li>
-			<li><a href="${context}/jquery/main.do?page=core">코어</a></li>
-			<li><a href="${context}/jquery/main.do?page=css">CSS</a></li>
-			<li><a href="${context}/jquery/main.do?page=effect">이펙트</a></li>
-			<li><a href="${context}/jquery/main.do?page=data">Data</a></li>
-			<li><a href="${context}/jquery/main.do?page=event">이벤트</a></li>
-			<li role="separator" class="divider"></li>
-			<li><a href="${context}/jquery/main.do?page=utility">유틸리티</a></li>
-			<li><a href="${context}/jquery/main.do?page=ajax">AJAX</a></li>
-          </ul>
-        </li>
-      </ul>
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <button type="submit" class="btn btn-default">검 색</button>
-      </form>
-<c:if test="${empty sessionScope.member}">
-    <!-- ..로그아웃 상태 시 표시할 태그 -->
-    <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" 
-          role="button" aria-haspopup="true" aria-expanded="false">회 원 <span class="caret">
-          </span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#" id="login">로그인</a></li>
-            <li><a href="${context}/member.do?page=join">회원가입</a></li>
-            <li><a href="#" id="admin">관리자</a></li>
-          </ul>
-        </li>
-      </ul>
-</c:if>
- 
-<c:if test="${not empty sessionScope.member}">
-<!-- ..로그인 상태 시 표시할 태그 -->
-   <ul class="nav navbar-nav navbar-right" id="mypage">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" 
-          role="button" aria-haspopup="true" aria-expanded="false"><c:out value="${member.name}"/> <span class="caret">
-          </span></a>
-          <ul class="dropdown-menu">
-            <li><a href="${context}/member.do?page=logout" id="logout">로그아웃</a></li>
-            <li><a href="${context}/member.do?page=mypage&userid=${member.userid}" id="mypage">마이페이지</a></li>
-          </ul>
-        </li>
-      </ul>
-</c:if>
-      
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+		<div id="home" class="brand" style="padding-left: 390px; padding-right: 390px;">MTB BOX</div>
+
+		<div class="address-bar" style="padding-left: 400px; padding-right: 400px;">
+		세상을 바꾸는 힘, Culture MTB(Movie Theater BOX)</div>
+	</div>
+
+	<!-- Navigation -->
+    <nav class="navbar navbar-default" role="navigation" >
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
+                <a class="navbar-brand" href="index.html">Business Casual</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style=" margin-left:33%;" >
+                <ul class="nav navbar-nav">
+                    <li>
+                        <button id="movie_btn">영화</button> <!-- 네비바 해당 링크 존재 -->
+                    </li>
+                    <li>
+                        <button id="ticket_btn" href="#" >예매</button>
+                    </li>
+                    <li>
+                        <button id="theater_btn" href="#" >극장</button>
+                    </li>
+                    <li>
+                        <button id="event_btn" href="#" >이벤트&컬쳐</button>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+    </nav>
+<script src="${context}/js/global.js"></script>  
+<script src="${context}/js/jquery.js"></script>
+<script src="${context}/js/bootstrap.js"></script>
+<script src="${context}/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(function() {
-		$('#login').click(function() {
-			bom.popup();
-		});
-		$('#admin').click(function() {
-			admin.checkAdmin();
-		});
-	});
-	var bom = {};
-	bom.popup = function() {
-		var url     = "${context}/member.do?";
-        var name    = "로그인";
-        var style   = "toolbar=no,status=no,directories=no,scrollbars=yes,location=no,resizable=no,border=0,menubar=no";
-        var param   = "page=login_form";      //없으면 지워도 됨.
-        var width   = 600;   //가로 사이즈 조절
-        var height  = 400;    //세로 사이즈 조절
-        var xpos    = (screen.availWidth - width  ) / 2;
-        var ypos    = (screen.availHeight- height ) / 2;
-        style       = style+',top='+ypos+',left='+ xpos +',width=' + width + ',height=' + height;
-        url         = url+param;
-        window.open(url,'',style);
-	        
-	}
-	var admin = {
-		checkAdmin : function() {
-			// confirm() 은 예 와 아니오 버튼이 존재하는 팝업창
-			// 예 버튼을 클릭하면 true 리턴
-			// 아니오 버튼을 클릭하면 false 리턴
-			var isAdmin = confirm('관리자입니까?');
-			if (!isAdmin) {
-				alert('관리자만 접근허용합니다.');
-			} else {
-				var password = prompt('관리자 비번을 입력하세요.');
-				// 관리자는 이미 회사로부터 접근번호를 부여받았으므로
-				// 이 예제에서는 1 로 미리 정의해둠
-				if (password == 1) {
-					location.href = "${context}/admin.do?page=main";
-				} else {
-					alert('관리자 비번이 틀립니다.');
-				}
+		$(window).on("popstate", function(event) {
+		    var e = event.originalEvent.state;  // 이부분으로 뒤로가기 할때마다 아까 저장한 히스토리 스택에 쌓인 URL을 불러 온다
+		    console.log("푸쉬상태 : " + e);
+		    switch (e) {
+			case "Admin_home":
+				Admin.home("${context}");
+				break;
+			case "Admin_member":
+				Admin.member("${context}");
+				break;
+			case "Admin_moive":
+				Member.movie("${context}");
+				break;
+			case "Movie_home":
+				Movie.home("${context}");
+				break;
+			case "Member_join":
+				Member.join("${context}");
+				break;
+			default:
+				$("#box").load("${context}/global/Main.do?page=default");
+				break;
 			}
-		}	
-	};
+		});
+		
+		/* 메인 버튼 */
+		$("#home").click(function() {
+			$("#box").load("${context}/global/Main.do?page=default");
+		});
+		
+		/* 네비게이션 버튼 */
+		$("#movie_btn").click(function() {
+			history.pushState("Movie_home","","");
+			Movie.home("${context}");
+		});
+		
+		$("#ticket_btn").click(function() {
+			history.pushState("Ticket_home","","");
+			$("#box").load("${context}/ticket/Ticket.do");
+		});
+		
+		$("#theater_btn").click(function() {
+			history.pushState("Theater_home","","");
+			$("#box").load();
+		});
+		
+		$("#event_btn").click(function() {
+			history.pushState("Event_home","","");
+			$("#box").load();
+		});
+		
+		/* 로그인 버튼 */
+		$("#header").on("click","#join_btn",function() {
+			history.pushState("Member_join","","");
+			Member.join("${context}");
+		});
+	
+		$("#header").on("click","#login_btn",function() {
+			Member.login("${context}");
+		});
+		
+		$("#header").on("click","#logout_btn",function() {
+			Member.logout("${context}");
+		});
+		
+		/*마이페이지 버튼 */
+		$("#header").on("click", "#mypage_btn",function() {
+			$("#box").load("${context}/member/Member.do?page=mypage");
+		});
+		
+		/* 관리자 버튼 */
+		$("#outbox").on("click","#admin_home",function() {
+			history.pushState("Admin_home","","");
+			Admin.home("${context}");
+		});
+		$("#outbox").on("click","#admin_member",function() {
+			history.pushState("Admin_member","","");
+			Admin.member("${context}");
+		});
+		$("#outbox").on("click","#admin_movie",function() {
+			history.pushState("Admin_movie","","");
+			Admin.movie("${context}");
+		});
+		
+	
+	});
+	
+	
 </script>

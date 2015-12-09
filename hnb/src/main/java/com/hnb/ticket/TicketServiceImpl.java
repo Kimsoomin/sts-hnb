@@ -2,7 +2,9 @@ package com.hnb.ticket;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
 
+@Service
 public class TicketServiceImpl implements TicketService {
 
 	private static TicketService instance = new TicketServiceImpl();

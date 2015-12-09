@@ -6,6 +6,6 @@
 	<title>404에러</title>
 </head>
 <body>
-<div><img src="${img}/error404.jpg" alt="error404" /></div>	
+<div><img src="${img}/error500.jpg" alt="error404" /></div>	
 </body>
 </html>
