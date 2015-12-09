@@ -36,7 +36,14 @@ public class MemberController {
 			String gender,String email,String phone, 
 			Model model){
 		logger.info("조인멤버 진입");
-
+		member.setId(id);
+		member.setPassword(password);
+		member.setName(name);
+		member.setBirth(birth);
+		member.setAddr(addr);
+		member.setGender(gender);
+		member.setEmail(email);
+		member.setPhone(phone);
 		int result = service.join(member);
 		if (result == 1) {
 			logger.info("회원가입성공");
