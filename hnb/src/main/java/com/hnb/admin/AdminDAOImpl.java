@@ -1,5 +1,8 @@
 package com.hnb.admin;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class AdminDAOImpl implements AdminDAO{
 	private static AdminDAO instance = new AdminDAOImpl();
 	private AdminDAOImpl() {}
