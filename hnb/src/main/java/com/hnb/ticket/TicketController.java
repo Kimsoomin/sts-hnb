@@ -19,28 +19,22 @@ import com.hnb.member.MemberController;
 public class TicketController {
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	@Autowired
-	TicketService ticketService = TicketServiceImpl.getInstance();
+	TicketServiceImpl ticketService;
 	@Autowired
 	TicketVO ticketVO;
 	
-	@RequestMapping("/Ticket")
+	List movieListRate = new ArrayList();
+	List movieListAsc = new ArrayList();
+	List theaterList = new ArrayList();
+	List dateList = new ArrayList();
+	List timeList = new ArrayList();
+	List seatList = new ArrayList();
+	int result;
+	
 	public String Ticket(){
-		logger.info("Ticket 진입");
 		return "ticket/Ticket";
 	}
-	
-	@RequestMapping("/movieSelect")
-	public Model movieSelect(
-			String movie, String theater, 
-			String date, Model model){
-		logger.info("movieSelect 진입");
-		List movieListRate = new ArrayList();
-		List movieListAsc = new ArrayList();
-		List theaterList = new ArrayList();
-		List dateList = new ArrayList();
-		List timeList = new ArrayList();
-		List seatList = new ArrayList();
-		
+	public String movieSelect(String movie,String theater,String date){
 		if (theater==null && date!=null) {
 			logger.info("극장널");
 			theaterList = ticketService.getTheaterListByMD(movie,date);
@@ -48,35 +42,21 @@ public class TicketController {
 			logger.info("날짜널");
 			dateList = ticketService.getShowDateListByMT(movie,theater);
 		} else if (theater==null && date==null) {
-			logger.info("모두 널");
+			logger.info("다널");
 			theaterList = ticketService.getTheaterListByM(movie);
 			dateList = ticketService.getShowDateListByM(movie);
 		} else if (movie!=null&&theater!=null&&date!=null) {
 			timeList = ticketService.getTimeList(movie, theater, date);
 		}
 		List movieSelectList = new ArrayList();
-		System.out.println("극장" +theaterList);
-		System.out.println("날짜" +dateList);
+		logger.info("극장" +theaterList);
+		logger.info("날짜" +dateList);
 		movieSelectList.add(theaterList);
 		movieSelectList.add(dateList);
 		movieSelectList.add(timeList);
-		model.addAttribute("movieSelectList", movieSelectList);
-		
-		return model;
+		return "ticket/movieSelect";
 	}
-	
-	@RequestMapping("/theaterSelect")
-	public Model theaterSelect(
-			String movie, String theater, 
-			String date, Model model){
-		List movieListRate = new ArrayList();
-		List movieListAsc = new ArrayList();
-		List theaterList = new ArrayList();
-		List dateList = new ArrayList();
-		List timeList = new ArrayList();
-		List seatList = new ArrayList();
-		
-		logger.info("theaterSelect 진입");
+	public String theaterSelect(String movie,String theater,String date){
 		if (movie==null && date!=null) {
 			movieListRate = ticketService.getMovieRateByTD(theater,date);
 			movieListAsc = ticketService.getMovieAscByTD(theater,date);
@@ -94,22 +74,9 @@ public class TicketController {
 		theaterSelectList.add(movieListAsc);
 		theaterSelectList.add(dateList);
 		theaterSelectList.add(timeList);
-		model.addAttribute("theaterSelectList", theaterSelectList);
-		return model;
+		return "ticket/theaterSelect";
 	}
-	
-	@RequestMapping("/dateSelect")
-	public Model dateSelect(
-			String movie, String theater, 
-			String date, Model model){
-		logger.info("dateSelect 진입");
-		List movieListRate = new ArrayList();
-		List movieListAsc = new ArrayList();
-		List theaterList = new ArrayList();
-		List dateList = new ArrayList();
-		List timeList = new ArrayList();
-		List seatList = new ArrayList();
-		
+	public String dateSelect(String movie,String theater,String date){
 		if (movie==null && theater!=null) {
 			movieListRate = ticketService.getMovieRateByTD(theater,date);
 			movieListAsc = ticketService.getMovieAscByTD(theater,date);
@@ -127,28 +94,22 @@ public class TicketController {
 		dateSelectList.add(movieListAsc);
 		dateSelectList.add(theaterList);
 		dateSelectList.add(timeList);
-		
-		model.addAttribute("dateSelectList",dateSelectList);
-		return model;
+		logger.info("결과 : {}", timeList);
+		return "ticket/dateSelect";
 	}
-	@RequestMapping("/choiceseat")
-	public Model choiceseat(
-			String movie, String filmNumber, 
-			String theater, String date,
-			String time, Model model){
-		logger.info("choiceseat 진입");
+	public Model choiceseat(String movie,String theater,String date,String time, Model model){
+		String filmNumber = ticketService.getFilmNumberBy(movie);
+		System.out.println(filmNumber);
 		ticketVO.setFilmNumber(filmNumber);
 		ticketVO.setTheaterName(theater);
 		ticketVO.setDate(date);
 		ticketVO.setRoomName(time.split(" ")[0]);
 		ticketVO.setStartTime(time.split(" ")[1]);
-		
 		logger.info(ticketVO.getFilmNumber());
 		logger.info(ticketVO.getTheaterName());
 		logger.info(ticketVO.getDate());
 		logger.info(ticketVO.getRoomName());
 		logger.info(ticketVO.getStartTime());
-		int result = 0;
 		if(result == 1) {
 			model.addAttribute("result", "success");
 		} else {
@@ -156,86 +117,52 @@ public class TicketController {
 		}
 		return model;
 	}
-	
-	@RequestMapping("/initList")
-	public Model initList(
-			Model model){
-		logger.info("initList 진입");
-		List movieListRate = new ArrayList();
-		List movieListAsc = new ArrayList();
-		List theaterList = new ArrayList();
-		List dateList = new ArrayList();
-		List timeList = new ArrayList();
-		List seatList = new ArrayList();
-		List initList = new ArrayList();
-		
+	public String initList(){
 		movieListRate = ticketService.getRateList();
 		movieListAsc = ticketService.getAscList();
 		theaterList = ticketService.getTheaterList();
 		dateList = ticketService.getShowDateList();
-		
+		List initList = new ArrayList();
 		initList.add(movieListAsc);
 		initList.add(movieListAsc);
 		initList.add(theaterList);
 		initList.add(dateList);
-		
-		model.addAttribute("initList", initList);
-		return model;
+		logger.info("리스트"+initList);
+		return "ticket/initList";
 	}
-	
-	@RequestMapping("/Seats")
-	public Model Seats(
-			Model model){
-		logger.info("Seats 진입");
-		String movie = null;
-		String date = null;
+	public String Seats(Model model, String movie,String date,String time){
 		model.addAttribute("movie", movie);
 		model.addAttribute("date", date);
-		model.addAttribute("time", ticketVO.getStartTime());
-		return model;
+		model.addAttribute("time", time);
+		return "ticket/initList";
 	}
-	@RequestMapping("/initSeats")
-	public Model initSeats(
-			Model model){
-		logger.info("initSeats 진입");
-		List seatList = new ArrayList();
+	public String initSeats(){
+		logger.info("좌석초기화진입");
 		seatList = ticketService.getSeatList(ticketVO.getTheaterName(),ticketVO.getRoomName());
-		model.addAttribute("seatList", seatList);
-		return model;
+		return "ticket/initSeats";
 	}
-	
-	@RequestMapping("/infoSave")
-	public Model infoSave(
-			String adult, String old_man,
-			String teenager, String seat_number,
-			String price, Model model){
-		logger.info("infoSave 진입");
+	public String infoSave(Model model, String adult,String old_man,String teenager,String price,String seat_number){
 		ticketVO.setAdult(Integer.parseInt(adult));
 		ticketVO.setOldMan(Integer.parseInt(old_man));
 		ticketVO.setTeenager(Integer.parseInt(teenager));
 		ticketVO.setPrice(Integer.parseInt(price));
 		ticketVO.setSeatNumber(seat_number);
-		
-		int result = 0;
+		logger.info(adult);
+		logger.info(old_man);
+		logger.info(teenager);
+		logger.info(price);
+		logger.info(seat_number);
 		if(result == 1) {
 			model.addAttribute("result", "success");
-
 		} else {
 			model.addAttribute("result", "fail");
 		}
-		
-		return model;
+		return "ticket/infoSave";
 	}
-	
-	@RequestMapping("/Confirm")
-	public String Confirm(
-			Model model){
-		logger.info("Confirm 진입");
-		String movie = null;
-		model.addAttribute("movie", movie);
-		model.addAttribute("ticket", ticketVO);
+	public String Confirm(){
 		return "ticket/Confirm";
 	}
+	
 	
 }
 

@@ -21,82 +21,72 @@ import com.hnb.main.MainController;
 public class MovieController {
 	private static final Logger logger = LoggerFactory.getLogger(MovieController.class);
 	
-	@Autowired	
+	@Autowired
 	MovieServiceImpl service;
 	@Autowired
 	MovieVO movie;
 	
 	@RequestMapping("/Movie")
-	public String home(){
-		logger.info("MovieController-home 진입");
-		return "movie/movie";
+	public String movie(){
+		logger.info("MovieController:Movie()");
+		return "movie/Movie.tiles";
+		
 	}
 	@RequestMapping("/movie_info")
 	public Model movieInfo(Model model){
-		logger.info("MovieController-movie_info 진입");
+		logger.info("MovieController:movieInfo()");
 		List<MovieVO> list = service.getList();
 		model.addAttribute("movieList", list);
-		logger.info("영화리스트 조회 결과: {}", list);
+		logger.info("영화리스트 조회결과 : {}", list);
 		return model;
 	}
 	@RequestMapping("/movie_name/{movieName}")
 	public @ResponseBody MovieVO movieName(
-			@PathVariable("movieName")String name,
-			Model model
-			){
-		logger.info("MovieController-movie_name 진입");
-		logger.info("영화 아이디: {}", name);
+			@PathVariable("movieName")String name){
+		logger.info("MovieController:movieName()");
+		logger.info("영화 아이디 : {}",name);
 		movie = service.searchByName(name);
-		logger.info("영화 제목: {}",movie);
-		/* model.addAttribute("movie", movie);
-		 * 객체 리턴할 때는(ajax 사용) model.addAttribute 사용 안 함 
-		 * */	
+		logger.info("영화제목 : {}",movie.getFilmName());
 		return movie;
 	}
 	@RequestMapping("/movie_Cut")
 	public Model movieCut(String filmNumber,Model model){
-		logger.info("MovieController-movie_Cut 진입");
-		logger.info("무비컷 영화 아이디 : {}", filmNumber);
+		logger.info("MovieController:movieCut()");
+		logger.info("movieCut의 filmNumber : {}",filmNumber);
 		movie = service.searchByName(filmNumber);
 		String cut = movie.getCut();
 		String[]arr = cut.split("/");
-		for (int i = 0; i < arr.length; i++) {
-			System.out.println(arr[i]);
-		}
-		model.addAttribute("arr", arr);
+		logger.info("배열결과 : {}",arr);
+		model.addAttribute("arr",arr);
 		return model;
 	}
 	@RequestMapping("/movie_Tra")
 	public Model movieTra(String filmNumber,Model model){
-		logger.info("MovieController-movie_Tra 진입");
-		logger.info("테라의 영화 아이디 : {}", filmNumber);
+		logger.info("MovieController:movieTra()");
+		logger.info("movieCut의 filmNumber : {}",filmNumber);
 		movie = service.searchByName(filmNumber);
 		String tra = movie.getTrailer();
-		System.out.println("getTrailer : "+ tra);
+		logger.info("getTrailer : {}",tra);
 		String[]arrt = tra.split("/");
-		logger.info("트레일러 : {}", arrt);
+		logger.info("트레일러 : {}",arrt);
 		model.addAttribute("arrt", arrt);
 		return model;
 	}
 	@RequestMapping("/movie_Basic")
-	public @ResponseBody MovieVO movieBasic(String filmNumber,Model model){
-		logger.info("MovieController-movie_Basic 진입");
-		logger.info("베이직 영화 아이디 : {}", filmNumber );
+	public @ResponseBody MovieVO movieBasic(String filmNumber, Model model){
+		logger.info("MovieController:movieBasic()");
+		logger.info("movieCut의 filmNumber : {}",filmNumber);
 		movie = service.searchByName(filmNumber);
-		logger.info("베이지 영화 제목: {}", movie.getFilmName());
-		model.addAttribute("movie", movie);
+		logger.info("movieBasic컷의영화제목 : {}",movie.getFilmName());
 		return movie;
 	}
-	@RequestMapping("/movieChart")
-	public Model movie_Chart(String filmNumber,Model model){
-		logger.info("MovieController-movie_Chart 진입");
+	@RequestMapping("/movie_Chart")
+	public Model movieChart(Model model){
+		logger.info("MovieController:movieChart()");
 		List<MovieVO> list = service.getList();
-		model.addAttribute("modellist2",list);
-		
-		logger.info("MovieController-movie_Chart 진입");
+		model.addAttribute("movieList2", list);
 		return model;
 	}
-
 
 	
 	
